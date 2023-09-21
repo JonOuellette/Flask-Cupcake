@@ -13,12 +13,9 @@ class Cupcake(db.Model):
     flavor = db.Column(db.Text, nullable = False)
     size = db.Column(db.Text, nullable = False)
     rating = db.Column(db.Float, nullable = False)
-    image = db.Column(db.Text, nullable = True)
+    image = db.Column(db.Text, nullable = False, default=DEFAULT_IMAGE)
 
-    def image_url(self):
-        """sets column image to user provided image or default"""
-        return self.image or DEFAULT_IMAGE
-    
+       
     def serialize(self):
         return{
             'id': self.id,

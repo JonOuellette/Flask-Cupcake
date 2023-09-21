@@ -1,5 +1,5 @@
 """Flask app for Cupcakes"""
-from flask import Flask, render_template, redirect, jsonify
+from flask import Flask, render_template, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Cupcake
 
@@ -21,3 +21,26 @@ db.create_all()
 def list_cupcakes():
     all_cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
     return jsonify(all_cupcakes)
+
+@app.route('/api/cupcakes/<int:id>')
+def get_cupcake(id):
+    cupcake = Cupcake.query.get_or_404(id)
+    return jsonify(cupcake=cupcake.serialize())
+
+@app.route('/api/cupcakes', methods=["POST"])
+def new_cupcake():
+    new_cupcake = Cupcake(
+        flavor = request.json["flavor"],
+        size = request.json["size"],
+        rating = request.json["rating"],
+        image = request.json["image"]
+        )
+    db.session.add(new_cupcake)
+    db.session.commit()
+    return (jsonify(cupcake=new_cupcake.serialize()), 201)
+
+
+@app.route('/api/cupcakes/<int:id>', method=["PATCH"])
+def update_cupcake(id):
+    cupcake = Cupcake.query.get_or_404(id)
+    
