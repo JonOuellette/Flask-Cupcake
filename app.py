@@ -1,5 +1,5 @@
 """Flask app for Cupcakes"""
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Cupcake
 
@@ -16,3 +16,8 @@ app.app_context().push()
 
 connect_db(app)
 db.create_all()
+
+@app.route('/api/cupcakes')
+def list_cupcakes():
+    all_cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
+    return jsonify(all_cupcakes)

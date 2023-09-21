@@ -18,6 +18,15 @@ class Cupcake(db.Model):
     def image_url(self):
         """sets column image to user provided image or default"""
         return self.image or DEFAULT_IMAGE
+    
+    def serialize(self):
+        return{
+            'id': self.id,
+            'flavor': self.flavor,
+            'size': self.size,
+            'rating': self.rating,
+            'image': self.image
+        }
 
 def connect_db(app):
     """Connect to database"""
