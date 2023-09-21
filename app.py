@@ -17,6 +17,11 @@ app.app_context().push()
 connect_db(app)
 db.create_all()
 
+@app.route('/')
+def index_page():
+    cupcakes = Cupcake.query.all()
+    return render_template('index.html', cupcakes=cupcakes)
+
 @app.route('/api/cupcakes')
 def list_cupcakes():
     all_cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
