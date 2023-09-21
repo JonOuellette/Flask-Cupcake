@@ -29,3 +29,23 @@ async function showCupcakeList(){
         cupcakesList.append(newCupcake);
     });
 }
+
+async function addCupcake(e){
+    e.preventDefault();
+
+    let flavor = $('#cupcake-flavor').val();
+    let rating = $('#cupcake-rating').val();
+    let size = $('#cupcake-size').val();
+    let image = $('#cupcake-image').val();
+
+    const newCupcakeResponse = await axios.post(`${BASE_URL}/cupcakes`, {
+        flavor,
+        rating,
+        size,
+        image
+    });
+
+    const newCupcake = $(generateCupcake(newCupcakeResponse.data.cupcake));
+    $("#cupcakes-list").append(newCupcake);
+    $("#new-cupcake-form")[0].reset();
+}
