@@ -24,6 +24,10 @@ class Cupcake(db.Model):
             'rating': self.rating,
             'image': self.image
         }
+    
+    def update(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self,k,v)
 
 def connect_db(app):
     """Connect to database"""

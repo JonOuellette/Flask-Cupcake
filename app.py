@@ -40,7 +40,13 @@ def new_cupcake():
     return (jsonify(cupcake=new_cupcake.serialize()), 201)
 
 
-@app.route('/api/cupcakes/<int:id>', method=["PATCH"])
+@app.route('/api/cupcakes/<int:id>', methods=["PATCH"])
 def update_cupcake(id):
     cupcake = Cupcake.query.get_or_404(id)
     
+    data = request.json
+    cupcake.update(**data)
+
+    db.session.commit()
+
+    return jsonify(cupcake = cupcake.serialize())
