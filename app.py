@@ -20,12 +20,13 @@ db.create_all()
 @app.route('/')
 def index_page():
     cupcakes = Cupcake.query.all()
-    return render_template('index.html', cupcakes=cupcakes)
+   
+    return render_template('index.html')
 
 @app.route('/api/cupcakes')
 def list_cupcakes():
-    all_cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
-    return jsonify(all_cupcakes)
+    cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
+    return jsonify(cupcakes=cupcakes)
 
 @app.route('/api/cupcakes/<int:id>')
 def get_cupcake(id):
@@ -33,16 +34,17 @@ def get_cupcake(id):
     return jsonify(cupcake=cupcake.serialize())
 
 @app.route('/api/cupcakes', methods=["POST"])
-def new_cupcake():
+def add_cupcake():
     new_cupcake = Cupcake(
         flavor = request.json["flavor"],
         size = request.json["size"],
         rating = request.json["rating"],
-        image = request.json["image"]
+        image = request.json["image"] 
         )
     db.session.add(new_cupcake)
     db.session.commit()
-    return (jsonify(cupcake=new_cupcake.serialize()), 201)
+    
+    return (jsonify(new_cupcake=new_cupcake.serialize()), 201)
 
 
 @app.route('/api/cupcakes/<int:id>', methods=["PATCH"])

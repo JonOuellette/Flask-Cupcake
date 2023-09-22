@@ -17,6 +17,7 @@ class Cupcake(db.Model):
 
        
     def serialize(self):
+        """Serialize cupcake in to a dict of cupcake info"""
         return{
             'id': self.id,
             'flavor': self.flavor,
